@@ -29,4 +29,8 @@ class Memory(object):
         return self.memory[index:index + n]
 
     def readWord(self, index):
-        return self.readBytes(index, WORDSIZE)
+        bytes = self.readBytes(index, WORDSIZE)
+        word = 0
+        for b in bytes:
+            word = (word << 8) | b
+        return word
