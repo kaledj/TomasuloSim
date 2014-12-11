@@ -11,8 +11,7 @@ def main():
     parser.add_argument('-v', '--verbose', action='store_true', help='Increase output verbosity.')
     args = parser.parse_args()
 
-    if args.verbose:
-        logger.setLogLevel(1)
+    logger.setLogLevel(1 if args.verbose else 0)
 
     machine = Machine()
     machine.loadProgram(args.filename)

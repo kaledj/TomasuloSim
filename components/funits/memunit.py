@@ -1,5 +1,6 @@
+from .funit import FUnit
 
-class MemUnit():
+class MemUnit(FUnit):
 
     def _lw(self):
         pass

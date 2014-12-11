@@ -1,5 +1,6 @@
+from .funit import FUnit
 
-class FPUnit():
+class FPUnit(FUnit):
 
     def _addf(self):
         pass

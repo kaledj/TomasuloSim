@@ -9,10 +9,10 @@ class Instruction(object):
         if self.numOpcode in [0, 1]:
             if self.numOpcode == 0:
                 self.funCode = fromBits & 0x3f
-                self.regType = 'fpr'
+                self.regType = 'gpr'
             else:
                 self.funCode = fromBits & 0x1f
-                self.regType = 'gpr'
+                self.regType = 'fpr'
             self.strOpcode = _OPCODES[self.numOpcode][self.funCode]
             self.s1Reg = (fromBits >> 21) & 0x1f
             self.s2Reg = (fromBits >> 16) & 0x1f
@@ -26,7 +26,7 @@ class Instruction(object):
         # Trap
         elif self.numOpcode == 17:
             self.strOpcode = _OPCODES[self.numOpcode]
-            self.trapReg = (fromBits >> 21) & 0x1f
+            self.s1Reg = (fromBits >> 21) & 0x1f
             self.funCode = fromBits & 0x1f
             if self.funCode == 2:
                 self.regType = 'fpr'

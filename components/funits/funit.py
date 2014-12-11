@@ -1,4 +1,5 @@
+from logger import log
 
 class FUnit(object):
     def __init__(self):
-        self.test = 0
+        self.busy = False

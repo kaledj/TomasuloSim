@@ -54,7 +54,7 @@ for ($i = 0; $i <= $#canfiles; $i++){
    print "Testing $input. ";
 
 #  change the command in quotes below to call your executable
-   system "python Tomasulo -f $input > $output";
+   system "python tomasulo.py -f $input > $output";
 
    #print "Comparing $output and $canoutput\n";
    $problemFile = $prefix . ".problems";

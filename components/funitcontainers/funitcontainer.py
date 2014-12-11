@@ -10,6 +10,7 @@ class FUnitContainer(object):
         self.instructions = configuration['instructions']
         self.rStations = [RStation(configuration['name'] + str(i), self)
                           for i in range(self.numRStations)]
+        self.funits = []
 
     def issue(self, instr):
         if instr.strOpcode not in self.instructions:
@@ -19,10 +20,25 @@ class FUnitContainer(object):
         self.getOpenRStation().issue(instr)
         return True
 
+    def execute(self):
+        for rStation in self.rStations:
+            rStation.execute()
+
+    def write(self):
+        for rStation in self.rStations:
+            cdb = rStation.write()
+            if cdb:
+                return cdb
+
     def getOpenRStation(self):
         for rStation in self.rStations:
             if not rStation.busy:
                 return rStation
+
+    def getOpenFUnit(self):
+        for unit in self.funits:
+            if not unit.busy:
+                return unit
 
     def hasOpenRStation(self):
         for rStation in self.rStations:
@@ -30,8 +46,15 @@ class FUnitContainer(object):
                 return True
         return False
 
-    def writeToRStation(self, rstation, value):
-        pass
+    def hasOpenFUnit(self):
+        for unit in self.funits:
+            if not unit.busy:
+                return True
+        return False
+
+    def updateRStations(self, cdb):
+        for rStation in self.rStations:
+            rStation.recieveOperands(cdb)
 
     def dumpRStations(self):
         return '\n'.join([station.toString() for station in self.rStations])
@@ -42,3 +65,12 @@ class FUnitContainer(object):
             if rStation.busy:
                 anyBusy = True
         return anyBusy
+
+    def clearRStations(self):
+        for rStation in self.rStations:
+            rStation.clearIfWritten()
+
+    def getExecutingRStations(self):
+        for rStation in self.rStations:
+            if rStation.executing:
+                yield rStation

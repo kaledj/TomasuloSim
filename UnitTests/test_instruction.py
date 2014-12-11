@@ -16,4 +16,5 @@ class InstructionTest(unittest.TestCase):
         self.assertEquals(instr.strOpcode, 'trap')
         self.assertEquals(instr.funCode, 3)
         self.assertEquals(instr.regType, 'gpr')
+        self.assertEquals(instr.s1Reg, 4)
 
