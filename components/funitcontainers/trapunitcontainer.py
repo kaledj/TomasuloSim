@@ -8,9 +8,11 @@ class TrapUnitContainer(FUnitContainer):
         super().__init__(configuration, machine)
         self.funits = [TrapUnit(machine) for i in range(self.numUnits)]
         self.trapQueue = Queue()
-        # self.nextTrap = None
 
     def issue(self, instr):
+        if instr.funCode == 0:
+            self.machine.haltIssued = True
+            log("Halt issued.")
         if instr.strOpcode not in self.instructions:
             return False
         if not self.hasOpenRStation():

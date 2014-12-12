@@ -1,5 +1,5 @@
 
-
+import struct
 from .rstation import RStation
 
 WORDSIZE = 4
@@ -55,6 +55,10 @@ class Memory(object):
         for b in dataBytes:
             word = (word << 8) | b
         return word
+
+    def readFloatWord(self, address):
+        dataBytes = self.readBytes(address, WORDSIZE)
+        return struct.unpack('>f', dataBytes)[0]
 
     def readString(self, address):
         terminated = False
