@@ -8,11 +8,6 @@ class MemUnit(FUnit):
         self.functions['sw'] = self._sw
         self.functions['sf'] = self._sf
 
-    # def execute(self, **kwargs):
-    #     opcode = kwargs['opcode']
-    #     log('{0} executed.'.format(opcode))
-    #     self.functions[opcode](**kwargs)
-
     def _lw(self, **kwargs):
         base = kwargs['src1']
         offset = kwargs['immediate']

@@ -1,5 +1,6 @@
 from .funit import FUnit
 from tools import twosComp, bitLen, bitsAsFloat, floatAsBits
+import struct
 
 class FPUnit(FUnit):
     def mapFunctions(self):
@@ -48,6 +49,7 @@ class FPUnit(FUnit):
 
     def _cvti2f(self, **kwargs):
         src1 = kwargs['src1']
+        src1 = struct.unpack('>i', struct.pack('>I',src1))[0]
         src1 = float(src1)
-        result = floatAsBits(src1)
+        result = struct.unpack('>I', struct.pack('>f',src1))[0]
         return result

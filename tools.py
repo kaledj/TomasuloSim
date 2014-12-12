@@ -1,9 +1,5 @@
 import struct
 
-# def extractBitField(bitString, len, start, end):
-#         toExtract = end - start
-#         (bitString >> (len - 6)) & 0x3f
-
 def twosComp(val, bits):
     if val & (1 << (bits - 1)) != 0:
         val -= 1 << bits
@@ -18,6 +14,7 @@ def bitLen(value):
 
 def bitsAsFloat(intValue):
     return struct.unpack('>f', struct.pack('>I', intValue))[0]
+
 
 def floatAsBits(floatValue):
     return struct.unpack('>I', struct.pack('>f', floatValue))[0]

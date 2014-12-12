@@ -1,3 +1,4 @@
+import tools
 from .funit import FUnit
 from logger import log
 
@@ -19,13 +20,11 @@ class IntUnit(FUnit):
         self.functions['movi2fp'] = self._movi2fp
         self.functions['nop'] = self._nop
 
-    # def execute(self, **kwargs):
-    #     opcode = kwargs['opcode']
-    #     log('{0} executed.'.format(opcode))
-    #     return self.functions[opcode](**kwargs)
-        
     def _addi(self, **kwargs):
-        return kwargs['src1'] + kwargs['immediate']
+        src1 = kwargs['src1']
+        if src1 >> 31 == 1:
+                src1 = tools.twosComp(src1, 32)
+        return src1 + kwargs['immediate']
 
     def _add(self, **kwargs):
         return kwargs['src1'] + kwargs['src2']

@@ -19,7 +19,7 @@ class BranchUnit(FUnit):
 
     def _j(self, **kwargs):
         name = kwargs['name']
-        return self.machine.PC + name
+        return self.machine.PC + name + 4
 
     def _jr(self, **kwargs):
         src1 = kwargs['src1']

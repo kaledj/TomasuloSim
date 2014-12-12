@@ -12,13 +12,11 @@ class Machine(object):
         self.fprFile = FPR()
 
         # Functional units and rstations
-        self.unitContainers = {'IntUnit': IntUnitContainer(config.intUnits, self),
-                       'TrapUnit': TrapUnitContainer(config.trapUnits, self),
-                       'BranchUnit': BranchUnitContainer(config.branchUnits, self),
-                       'MemUnit': MemUnitContainer(config.memUnits, self),
-                       'FPUnit': FPUnitContainer(config.fpUnits, self)
-        }
-
+        self.unitContainers = [IntUnitContainer(config.intUnits, self),
+                               TrapUnitContainer(config.trapUnits, self),
+                               BranchUnitContainer(config.branchUnits, self),
+                               MemUnitContainer(config.memUnits, self),
+                               FPUnitContainer(config.fpUnits, self)]
         # System stats
         self.PC = 0
         self.cycle = 0
@@ -39,18 +37,18 @@ class Machine(object):
             self.cycle += 1
 
     def write(self):
-        for unit in self.unitContainers.values():
+        for unit in self.unitContainers:
             cdb = unit.write()
             if cdb:
                 return cdb
 
     def execute(self):
-        for unit in self.unitContainers.values():
+        for unit in self.unitContainers:
             unit.execute()
 
     def issue(self, instr):
         issued = False
-        for unit in self.unitContainers.values():
+        for unit in self.unitContainers:
             if unit.issue(instr):
                 return True
         return issued
@@ -71,23 +69,25 @@ class Machine(object):
         return Instruction(self.memory.readWord(self.PC))
 
     def pendingBranch(self):
-        return self.unitContainers['BranchUnit'].hasInstruction()
+        for unit in self.unitContainers:
+            if type(unit) is BranchUnitContainer:
+                return unit.hasInstruction()
 
     def updateRStations(self, cdb):
         if cdb:
-            for unit in self.unitContainers.values():
+            for unit in self.unitContainers:
                 unit.updateRStations(cdb)
 
     def clearRStations(self):
-        for unit in self.unitContainers.values():
+        for unit in self.unitContainers:
             unit.clearRStations()
 
     def dumpRStations(self):
-        dump = [unit.dumpRStations() for unit in self.unitContainers.values()]
+        dump = [unit.dumpRStations() for unit in self.unitContainers]
         return '\n'.join(dump)
 
     def hasInstruction(self):
-        for unit in self.unitContainers.values():
+        for unit in self.unitContainers:
             if unit.hasInstruction():
                 return True
         return False

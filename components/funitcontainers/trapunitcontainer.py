@@ -10,11 +10,11 @@ class TrapUnitContainer(FUnitContainer):
         self.trapQueue = Queue()
 
     def issue(self, instr):
+        if instr.strOpcode not in self.instructions:
+            return False
         if instr.funCode == 0:
             self.machine.haltIssued = True
             log("Halt issued.")
-        if instr.strOpcode not in self.instructions:
-            return False
         if not self.hasOpenRStation():
             return False
         rStation = self.getOpenRStation()

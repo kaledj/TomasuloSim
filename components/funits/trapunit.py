@@ -1,6 +1,7 @@
 import tools
 from .funit import FUnit
 from logger import log
+import struct
 
 class TrapUnit(FUnit):
     def mapFunctions(self):
@@ -16,9 +17,12 @@ class TrapUnit(FUnit):
         srcVal = kwargs['src1']
         # if func == 0:
         if func == 1:
-            print(srcVal, end="")
+            if srcVal >> 31 == 1:
+                srcVal = tools.twosComp(srcVal, 32)
+            print(srcVal, end="", flush=True)
         elif func == 2:
-            srcVal = tools.bitsAsFloat(srcVal)
+            srcVal = struct.unpack('>f', struct.pack('>I', srcVal))[0]
+            # srcVal = float(srcVal)
             print(round(srcVal, 2), end="")
         elif func == 3:
             string = self.machine.memory.readString(srcVal)

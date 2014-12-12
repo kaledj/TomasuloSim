@@ -84,17 +84,6 @@ class RStation(object):
                 self.Vk = registerFile.values[src2]
         if imm is not None:
             self.A = imm
-        # # Special case for stores. Read dst as a source
-        # if instr.strOpcode in ['sf', 'sw']:
-        #     dst = instr.dstReg
-        #     if instr.dstRegType == 'f':
-        #         registerFile = self.container.machine.fprFile
-        #     else:
-        #         registerFile = self.container.machine.gprFile
-        #     if registerFile.status[dst] is not None:
-        #         self.Qk = registerFile.status[dst]
-        #     else:
-        #         self.Vk = registerFile.values[dst]
 
     def recieveOperands(self, cdb):
         if cdb is not None:

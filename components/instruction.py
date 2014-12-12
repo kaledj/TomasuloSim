@@ -42,14 +42,6 @@ class Instruction(object):
         elif self.numOpcode == 17:
             self.s1Reg = (fromBits >> 21) & 0x1f
             self.funCode = fromBits & 0x1f
-        # Stores
-        # elif self.numOpcode in [46, 47]:
-        #     immVal = fromBits & 0xffff
-        #     if (immVal >> 15) == 1:
-        #         self.immediate = twosComp(immVal, bitLen(immVal))
-        #     else:
-        #         self.immediate = immVal
-        #     self.dstReg = (fromBits >> 16) & 0x1f
         else:
             immVal = fromBits & 0xffff
             if (immVal >> 15) == 1:
