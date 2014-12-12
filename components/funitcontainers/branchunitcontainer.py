@@ -20,8 +20,7 @@ class BranchUnitContainer(FUnitContainer):
                 self.machine.PC = rStation.result
                 if rStation.opcode in ['jal', 'jalr']:
                     self.machine.gprFile.values[31] = rStation.PC + 4
+                    if self.machine.gprFile.status[31] == rStation.name:
+                       self.machine.gprFile.status[31] = None
                 rStation.resultWritten = True
-        for rStation in self.rStations:
-            cdb = rStation.write()
-            if cdb:
-                return cdb
+                return None

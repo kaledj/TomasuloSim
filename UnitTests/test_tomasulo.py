@@ -315,7 +315,7 @@ class TestTomasulo(unittest.TestCase):
             machine = Machine()
             machine.loadProgram('Tomasulo/' + inputFile)
             machine.run()
-            with open('Tomasulo/' + inputFile.stip('.hex') + '.out', 'r') as answerFile:
+            with open('Tomasulo/' + inputFile.strip('.hex') + '.out', 'r') as answerFile:
                 answer = answerFile.read()
             self.assertEquals(output.getvalue(), answer)
 

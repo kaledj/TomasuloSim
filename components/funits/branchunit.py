@@ -11,7 +11,7 @@ class BranchUnit(FUnit):
 
     def _beqz(self, **kwargs):
         src1 = kwargs['src1']
-        imm = kwargs['immediate']
+        imm = kwargs['name']
         if src1 == 0:
             return self.machine.PC + 4 + imm
         else:
@@ -26,14 +26,10 @@ class BranchUnit(FUnit):
         return src1
 
     def _jal(self, **kwargs):
-        # TODO fix?
         name = kwargs['name']
-        PC = self.machine.PC
         return self.machine.PC + 4 + name
 
     def _jalr(self, **kwargs):
-        #TODO fix?
-        PC = self.machine.PC
         src1 = kwargs['src1']
         return src1
 

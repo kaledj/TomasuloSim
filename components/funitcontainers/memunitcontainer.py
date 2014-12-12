@@ -15,8 +15,33 @@ class MemUnitContainer(FUnitContainer):
         if not self.hasOpenRStation():
             return False
         rStation = self.getOpenRStation()
-        rStation.issue(instr)
         self.memoryQueue.put(rStation)
+        # Issuing
+        rStation.instruction = instr
+        rStation.busy = True
+        rStation.opcode = instr.strOpcode
+        rStation.execTime = self.execTime
+        # Load or store
+        gpr = self.machine.gprFile
+        fpr = self.machine.fprFile
+        rFile = gpr if instr.srcRegType == 'g' else fpr
+        if rFile.status[instr.s1Reg] is not None:
+            rStation.Qj = rFile.status[instr.s1Reg]
+        else:
+            rStation.Vj = rFile.values[instr.s1Reg]
+            rStation.Qj = None
+        rStation.A = instr.immediate
+        rFile = gpr if instr.dstRegType == 'g' else fpr
+        # Load only
+        if instr.strOpcode in ['lw', 'lf']:
+             rFile.status[instr.dstReg] = rStation.name
+        # Store only
+        if instr.strOpcode in ['sw', 'sf']:
+            if rFile.status[instr.dstReg] is not None:
+                rStation.Qk = rFile.status[instr.dstReg]
+            else:
+                rStation.Vk = rFile.values[instr.dstReg]
+                rStation.Qk = None
         return True
 
     def execute(self):
@@ -34,14 +59,12 @@ class MemUnitContainer(FUnitContainer):
             _ = self.memoryQueue.get()
 
     def write(self):
-        stored = False
         for rStation in self.rStations:
-            if not stored and rStation.opcode in ['sf', 'sw'] and rStation.resultReady:
+            if rStation.opcode in ['sf', 'sw'] and rStation.resultReady:
                 ea = rStation.result
                 data = rStation.Vk
                 self.machine.memory.storeWord(ea, data)
                 rStation.resultWritten = True
-                stored = True
         for rStation in self.rStations:
             cdb = rStation.write()
             if cdb:

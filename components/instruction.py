@@ -6,8 +6,22 @@ class Instruction(object):
     def __init__(self, fromBits):
         self.clearFields()
         self.numOpcode = (fromBits >> (INSTR_LEN - 6)) & 0x3f
+        if self.numOpcode not in [0, 1]:
+            self.strOpcode = _OPCODES[self.numOpcode]
+        if self.numOpcode == 4:
+            self.make_beqz(fromBits)
+        elif self.numOpcode == 35:
+            self.make_lw(fromBits)
+        elif self.numOpcode == 3:
+            self.make_jal(fromBits)
+        elif self.numOpcode == 19:
+            self.make_jalr(fromBits)
+        elif self.numOpcode == 18:
+            self.make_jr(fromBits)
+        elif self.numOpcode == 2:
+            self.make_j(fromBits)
         # R-R
-        if self.numOpcode in [0, 1]:
+        elif self.numOpcode in [0, 1]:
             if self.numOpcode == 0:
                 self.funCode = fromBits & 0x3f
             elif self.numOpcode == 1:
@@ -75,6 +89,36 @@ class Instruction(object):
     def isHalt(self):
         return self.strOpcode == 'trap' and self.funCode == 0
 
+    def make_beqz(self, fromBits):
+        self.s1Reg = (fromBits >> 21) & 0x1f
+        self.name = fromBits & 0xffff
+        if (self.name >> 15) == 1:
+            self.name = twosComp(self.name, bitLen(self.name))
+
+    def make_lw(self, fromBits):
+        self.s1Reg = (fromBits >> 21) & 0x1f
+        self.immediate = fromBits & 0xffff
+        self.dstReg = (fromBits >> 16) & 0x1f
+        if (self.immediate >> 15) == 1:
+            self.immediate = twosComp(self.immediate, bitLen(self.immediate))
+
+    def make_jal(self, fromBits):
+        self.dstReg = 31
+        self.name = fromBits & 0x3ffffff
+        if (self.name >> 25) == 1:
+            self.name = twosComp(self.name, bitLen(self.name))
+
+    def make_jalr(self, fromBits):
+        self.s1Reg = (fromBits >> 21) & 0x1f
+        self.dstReg = 31
+
+    def make_jr(self, fromBits):
+        self.s1Reg = (fromBits >> 21) & 0x1f
+
+    def make_j(self, fromBits):
+        self.name = fromBits & 0x3ffffff
+        if (self.name >> 25) == 1:
+            self.name = twosComp(self.name, bitLen(self.name))
 
 _FUNCODES0 = {
     0: 'nop', 32: 'add', 34: 'sub', 36: 'and', 37: 'or', 38: 'xor',
