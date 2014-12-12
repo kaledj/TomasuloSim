@@ -38,3 +38,8 @@ class TestMemory(TestCase):
         mem.loadProgram('Tomasulo/intUnit1.hex')
         mem.storeWord(0, 0xFFFFFFFF)
         self.assertEquals(mem.readWord(0), 0xFFFFFFFF)
+
+    def test_readFloatWord(self):
+        mem = Memory()
+        mem.loadProgram('Tomasulo/fpUnit4.hex')
+        val = mem.readFloatWord(0x44)

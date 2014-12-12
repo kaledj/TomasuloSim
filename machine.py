@@ -5,6 +5,7 @@ from components import *
 
 class Machine(object):
     def __init__(self):
+        self.program = ''
         # Memory and registers
         self.memory = Memory()
         self.gprFile = GPR()
@@ -21,13 +22,13 @@ class Machine(object):
         # System stats
         self.PC = 0
         self.cycle = 0
-        self.halted = False
+        self.haltIssued = False
 
     def run(self):
-        while not self.halted or self.hasInstruction():
+        while not self.haltIssued or self.hasInstruction():
             cdb = self.write()
             self.execute()
-            if not self.halted and not self.pendingBranch():
+            if not self.haltIssued and not self.pendingBranch():
                 instr = self.nextInstruction()
                 stalled = False if self.issue(instr) else True
                 if not instr.isHalt() and not stalled:
@@ -70,7 +71,7 @@ class Machine(object):
         return Instruction(self.memory.readWord(self.PC))
 
     def pendingBranch(self):
-        return False
+        return self.unitContainers['BranchUnit'].hasInstruction()
 
     def updateRStations(self, cdb):
         if cdb:
@@ -92,5 +93,6 @@ class Machine(object):
         return False
 
     def loadProgram(self, filename):
+        self.program = filename
         self.memory.loadProgram(filename)
 
