@@ -17,7 +17,7 @@ def bitLen(value):
     return length
 
 def bitsAsFloat(intValue):
-    return struct.unpack('>f', struct.pack('>i', intValue))[0]
+    return struct.unpack('>f', struct.pack('>I', intValue))[0]
 
 def floatAsBits(floatValue):
-    return struct.unpack('>i', struct.pack('>f', floatValue))[0]
+    return struct.unpack('>I', struct.pack('>f', floatValue))[0]

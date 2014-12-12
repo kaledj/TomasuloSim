@@ -12,6 +12,8 @@ class Instruction(object):
             self.make_beqz(fromBits)
         elif self.numOpcode == 35:
             self.make_lw(fromBits)
+        elif self.numOpcode == 38:
+            self.make_lf(fromBits)
         elif self.numOpcode == 3:
             self.make_jal(fromBits)
         elif self.numOpcode == 19:
@@ -34,12 +36,10 @@ class Instruction(object):
         # J type
         elif self.numOpcode in [2, 3]:
             self.name = fromBits & 0x3ffffff
-            self.strOpcode = _OPCODES[self.numOpcode]
             if self.numOpcode == 3:
                 self.dstReg = 31
         # Trap
         elif self.numOpcode == 17:
-            self.strOpcode = _OPCODES[self.numOpcode]
             self.s1Reg = (fromBits >> 21) & 0x1f
             self.funCode = fromBits & 0x1f
         # Stores
@@ -58,10 +58,7 @@ class Instruction(object):
                 self.immediate = immVal
             self.strOpcode = _OPCODES[self.numOpcode]
             self.s1Reg = (fromBits >> 21) & 0x1f
-            if self.numOpcode in [18, 19]:
-                self.dstReg = None
-            else:
-                self.dstReg = (fromBits >> 16) & 0x1f
+            self.dstReg = (fromBits >> 16) & 0x1f
         self.srcRegType, self.dstRegType = self.getRegisterTypes()
 
     def getRegisterTypes(self):
@@ -96,6 +93,13 @@ class Instruction(object):
             self.name = twosComp(self.name, bitLen(self.name))
 
     def make_lw(self, fromBits):
+        self.s1Reg = (fromBits >> 21) & 0x1f
+        self.immediate = fromBits & 0xffff
+        self.dstReg = (fromBits >> 16) & 0x1f
+        if (self.immediate >> 15) == 1:
+            self.immediate = twosComp(self.immediate, bitLen(self.immediate))
+
+    def make_lf(self, fromBits):
         self.s1Reg = (fromBits >> 21) & 0x1f
         self.immediate = fromBits & 0xffff
         self.dstReg = (fromBits >> 16) & 0x1f
