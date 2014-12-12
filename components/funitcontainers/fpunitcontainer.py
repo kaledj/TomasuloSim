@@ -4,4 +4,4 @@ from ..funits.fpunit import FPUnit
 class FPUnitContainer(FUnitContainer):
     def __init__(self, configuration, machine):
         super().__init__(configuration, machine)
-        self.funits = [FPUnit(machine) for i in range(self.numUnits)]
+        self.funits = [FPUnit() for i in range(self.numUnits)]

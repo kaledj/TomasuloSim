@@ -2,38 +2,19 @@
 from .funit import FUnit
 
 class BranchUnit(FUnit):
-    def mapFunctions(self):
-        self.functions['beqz'] = self._beqz
-        self.functions['j'] = self._j
-        self.functions['jr'] = self._jr
-        self.functions['jal'] = self._jal
-        self.functions['jalr'] = self._jalr
 
-    def _beqz(self, **kwargs):
-        src1 = kwargs['src1']
-        imm = kwargs['immediate']
-        if src1 == 0:
-            return self.machine.PC + 4 + imm
-        else:
-            return self.machine.PC + 4
+    def _beqz(self):
+        pass
 
-    def _j(self, **kwargs):
-        name = kwargs['name']
-        return self.machine.PC + name
+    def _j(self):
+        pass
 
-    def _jr(self, **kwargs):
-        src1 = kwargs['src1']
-        return src1
+    def _jr(self):
+        pass
 
-    def _jal(self, **kwargs):
-        # TODO fix?
-        name = kwargs['name']
-        PC = self.machine.PC
-        return self.machine.PC + 4 + name
+    def _jal(self):
+        pass
 
-    def _jalr(self, **kwargs):
-        #TODO fix?
-        PC = self.machine.PC
-        src1 = kwargs['src1']
-        return src1
+    def _jalr(self):
+        pass
 

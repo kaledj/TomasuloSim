@@ -13,7 +13,6 @@ def main():
 
     logger.setLogLevel(1 if args.verbose else 0)
 
-    # Run
     machine = Machine()
     machine.loadProgram(args.filename)
     machine.run()

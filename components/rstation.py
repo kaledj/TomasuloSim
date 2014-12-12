@@ -26,8 +26,8 @@ class RStation(object):
         return s
 
     def write(self):
-        if self.resultReady and not self.resultWritten:
-            log('{0} writing its result.'.format(self.name))
+        if self.resultReady:
+            log('{0} writing its result to CDB.'.format(self.name))
             self.resultWritten = True
             return self.name, self.result
 
@@ -43,14 +43,13 @@ class RStation(object):
             self.computeResult()
 
     def issue(self, instr):
-        self.PC = self.container.machine.PC
         self.instruction = instr
         self.busy = True
         self.opcode = instr.strOpcode
         self.execTime = self.container.execTime
         self.storeOperands(instr)
         if instr.dstReg is not None:
-            if instr.dstRegType == 'f':
+            if instr.regType == 'fpr':
                 registerFile = self.container.machine.fprFile
             else:
                 registerFile = self.container.machine.gprFile
@@ -68,7 +67,7 @@ class RStation(object):
         src1 = instr.s1Reg
         src2 = instr.s2Reg
         imm = instr.immediate
-        if instr.srcRegType == 'f':
+        if instr.regType == 'fpr':
             registerFile = self.container.machine.fprFile
         else:
             registerFile = self.container.machine.gprFile
@@ -84,17 +83,6 @@ class RStation(object):
                 self.Vk = registerFile.values[src2]
         if imm is not None:
             self.A = imm
-        # Special case for stores. Read dst as a source
-        if instr.strOpcode in ['sf', 'sw']:
-            dst = instr.dstReg
-            if instr.dstRegType == 'f':
-                registerFile = self.container.machine.fprFile
-            else:
-                registerFile = self.container.machine.gprFile
-            if registerFile.status[dst] is not None:
-                self.Qk = registerFile.status[dst]
-            else:
-                self.Vk = registerFile.values[dst]
 
     def recieveOperands(self, cdb):
         if cdb is not None:
@@ -151,6 +139,5 @@ class RStation(object):
                 'src2': self.Vk,
                 's1Reg': self.instruction.s1Reg,
                 'immediate': self.A,
-                'funCode': self.instruction.funCode,
-                'name': self.instruction.name
+                'funCode': self.instruction.funCode
         }
