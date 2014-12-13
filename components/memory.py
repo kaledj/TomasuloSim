@@ -1,6 +1,13 @@
+"""
+Memory
+
+This module contains an implementation of memory. Memory
+is stored in the Memory type as an array of bytes. Memory is
+byte addressable but can also be accessed in other nifty ways.
+
+"""
 
 import struct
-from .rstation import RStation
 
 WORDSIZE = 4
 

@@ -1,8 +1,20 @@
+"""
+Floating Point Unit
+
+This module contains logic for executing floating point instructions.
+"""
+
 from .funit import FUnit
 from tools import twosComp, bitLen, bitsAsFloat, floatAsBits
 import struct
 
+
 class FPUnit(FUnit):
+    """
+    FPUnit class.
+
+    A functional unit type that executes floating point instructions.
+    """
     def mapFunctions(self):
         self.functions['addf'] = self._addf
         self.functions['subf'] = self._subf

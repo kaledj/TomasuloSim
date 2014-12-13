@@ -1,3 +1,16 @@
+"""
+Memory Unit container.
+
+Managers a group of memory units. This module is responsibilty for load and store
+logic including a queue for memory access.
+
+Default issue functionality is overwritten to ensure loads and stores
+modify the machine in the correct way.
+
+Execute provides a load/store specific execution stage that allows for in order
+execution of memory accessing instructions.
+"""
+
 from .funitcontainer import FUnitContainer
 from ..funits.memunit import MemUnit
 from queue import Queue

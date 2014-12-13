@@ -1,3 +1,11 @@
+"""
+Floating Point container
+
+This module contains logic for managing a group of floating point
+execution units and associated reservations stations. Default logic
+currently handles most FP uses so this module simply allow for future expansion.
+"""
+
 from .funitcontainer import FUnitContainer
 from ..funits.fpunit import FPUnit
 

@@ -1,7 +1,21 @@
+"""
+Branch Unit container.
+
+This module contains 1 or more branch units and associated reservation
+stations. Overwrites the default issue and write logic to force stalling and
+allow writing to the PC.
+"""
+
 from .funitcontainer import FUnitContainer
 from ..funits.branchunit import BranchUnit
 
 class BranchUnitContainer(FUnitContainer):
+    """
+    BranchUnitContainer class.
+
+    A specific functional unit container for branches. Maintains and
+    managers branch units specifically.
+    """
     def __init__(self, configuration, machine):
         super().__init__(configuration, machine)
         self.funits = [BranchUnit(machine) for i in range(self.numUnits)]

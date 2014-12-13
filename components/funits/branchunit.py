@@ -1,7 +1,18 @@
+"""
+Branch Unit.
+
+Contains execution logic for a branch function unit.
+"""
 
 from .funit import FUnit
 
+
 class BranchUnit(FUnit):
+    """
+    BranchUnit class.
+
+     A functional unit for executing branch instructions.
+    """
     def mapFunctions(self):
         self.functions['beqz'] = self._beqz
         self.functions['j'] = self._j

@@ -1,0 +1,20 @@
+TomasuloSim
+===========
+
+Quick start guide:
+    python tomasulo.py -f inputfile [-v]
+
+    or
+
+    run.pl
+
+Compatability:
+    Tested with Python 3.4.1 and 3.4.2
+
+    Tested with /usr/local/bin/python3
+
+    No backwards compatability with 2.x
+
+Author:
+    David Kale
+    Dec 2014

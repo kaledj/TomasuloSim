@@ -1,3 +1,11 @@
+"""
+Integer Unit container.
+
+Manages a group and integer units and associated reservation statsions.
+Current default functionality does not need to be extended to provide
+functionality needed.
+"""
+
 from .funitcontainer import FUnitContainer
 from ..funits.intunit import IntUnit
 

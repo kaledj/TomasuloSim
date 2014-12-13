@@ -1,3 +1,11 @@
+"""
+Trap Unit container.
+
+A container that holds a group of trap units and associated reservation stations.
+
+Implements trap specific functionality such as in order execution of trap instructions.
+"""
+
 from .funitcontainer import FUnitContainer
 from ..funits.trapunit import TrapUnit
 from queue import Queue

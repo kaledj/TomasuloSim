@@ -1,3 +1,12 @@
+"""
+Instruction module.
+
+This module contains the Instruction type and methods to create them
+dynamically at runtime. All instructions are bundled into one type for
+simplicity but achieve specificity with named keyword arguments.
+
+"""
+
 from tools import twosComp, bitLen
 
 INSTR_LEN = 32

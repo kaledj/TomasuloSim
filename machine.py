@@ -1,7 +1,17 @@
+"""
+Machine
+
+This module implements the highest level of operation logic.
+
+The Machine type contains all subcomponents of the machine. High level
+issue, execute, write loop occurs here.
+
+"""
 
 from logger import log
 import config
 from components import *
+
 
 class Machine(object):
     def __init__(self):
@@ -24,6 +34,7 @@ class Machine(object):
 
     def run(self):
         while not self.haltIssued or self.hasInstruction():
+            log('\n\n# Clock cycle: {0} #\n{2}'.format(self.cycle, '#'*20, '#'*20))
             cdb = self.write()
             self.execute()
             if not self.haltIssued and not self.pendingBranch():
@@ -56,6 +67,7 @@ class Machine(object):
     def updateRegFiles(self, cdb):
         if cdb is None: return
         source, val = cdb
+        log('Writing: {0} {1} to CDB.'.format(source, val))
         for x, regStat in enumerate(self.gprFile.status):
             if regStat == source:
                 self.gprFile.values[x] = val
@@ -93,6 +105,7 @@ class Machine(object):
         return False
 
     def loadProgram(self, filename):
+        log('Loading program: {0}'.format(filename))
         self.program = filename
         self.memory.loadProgram(filename)
 

@@ -1,13 +1,18 @@
+"""
+Integer Unit
+
+This module contains execution logic for integer instructions.
+"""
+
 import tools
 from .funit import FUnit
-from logger import log
 
 class IntUnit(FUnit):
-    # def __init__(self):
-    #     super(IntUnit, self).__init__()
-    #     self.functions = {}
-    #     self.mapFunctions()
-        
+    """
+    IntUnit class.
+
+    A functional unit for integer instructions.
+    """
     def mapFunctions(self):
         self.functions['addi'] = self._addi
         self.functions['add'] = self._add

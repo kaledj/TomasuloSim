@@ -1,7 +1,18 @@
+"""
+Memory Unit
+
+This module contains execution logic for memory instructions.
+"""
+
 from .funit import FUnit
-from logger import log
+
 
 class MemUnit(FUnit):
+    """
+    MemUnit class.
+
+    A functional unit type that executes memory accessing instructions.
+    """
     def mapFunctions(self):
         self.functions['lw'] = self._lw
         self.functions['lf'] = self._lf

@@ -1,3 +1,21 @@
+"""
+Reservation station
+
+This module implements reservation stations. The Rstation handles several
+important pieces of functionality.
+
+The issue step reads operands if they are available and sets register
+status if there if a destination in the instruction.
+
+The execute step begins execution if the station has operands and a
+functional unit is available. It continues already exectuing instructions and
+computes results when execution is complete.
+
+The write stage writes the result in the RStation to the CDB. Logic for
+checking if the CDB is busy is higher up, so write will only write when
+it is appropriate.
+"""
+
 from logger import log
 
 class RStation(object):
@@ -27,7 +45,7 @@ class RStation(object):
 
     def write(self):
         if self.resultReady and not self.resultWritten:
-            log('{0} writing its result.'.format(self.name))
+            log('{0} in write stage.'.format(self.name))
             self.resultWritten = True
             return self.name, self.result
 
@@ -39,7 +57,8 @@ class RStation(object):
             self.decreaseExecTime()
             log('{0} continuing execution. Time left: {1}'.format(self.name, self.execTime))
         elif self.execTime == 0 and not self.resultReady:
-            log('{0} completing execution.'.format(self.name))
+            log('{0} completing execution of {1}.'.format(self.name,
+                                                          self.instruction.strOpcode))
             self.computeResult()
 
     def issue(self, instr):

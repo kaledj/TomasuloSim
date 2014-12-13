@@ -1,3 +1,12 @@
+"""
+Functional Unit container.
+
+The default container class for execution units and associated reservation
+stations. Coordinates functional units and reservations statios.
+
+Provides deafault and often sufficient default functionality.
+"""
+
 from ..rstation import RStation
 from logger import log
 

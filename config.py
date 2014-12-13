@@ -1,4 +1,10 @@
+"""
+Configuration
 
+This module contains configuration settings that will be used to
+initialize machine components.
+
+"""
 intUnits = {'name': 'IntRS',
             'rStations': 8,
             'numUnits': 3,
